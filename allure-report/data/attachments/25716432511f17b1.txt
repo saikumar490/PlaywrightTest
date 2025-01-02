@@ -1,0 +1,22 @@
+Failed to select option for search text "American Samoa" locator.fill: Test ended.
+Call log:
+  - waiting for locator('//input[@id="autocomplete"]')
+    - locator resolved to <input type="text" id="autocomplete" autocomplete="off" class="inputs ui-autocomplete-input" placeholder="Type to Select Countries"/>
+
+    at HelperBase.selectFromAutocomplete (E:\PlayWright_Framework\CommonUtils\HelperBase.js:99:40)
+    at E:\PlayWright_Framework\tests\test.spec.js:11:14
+Failed to interact with radio button with locator: (//input[@class="radioButton"])[1] locator.isChecked: Test ended.
+Call log:
+  - waiting for locator('xpath=(//input[@class="radioButton"])[1]')
+
+    at HelperBase.ClickOnRadioButton (E:\PlayWright_Framework\CommonUtils\HelperBase.js:40:44)
+Failed to select option with value "Option2" in dropdown with locator: //select[@id="dropdown-class-example"] locator.selectOption: Test ended.
+Call log:
+  - waiting for locator('//select[@id="dropdown-class-example"]')
+
+    at HelperBase.SelectOptionFromDropdown (E:\PlayWright_Framework\CommonUtils\HelperBase.js:87:22)
+Failed to interact with checkbox with locator: //input[@id="checkBoxOption1"] locator.isChecked: Test ended.
+Call log:
+  - waiting for locator('//input[@id="checkBoxOption1"]')
+
+    at HelperBase.ClickOnCheckbox (E:\PlayWright_Framework\CommonUtils\HelperBase.js:62:40)

@@ -1,0 +1,4 @@
+Error during setup: page.goto: Target page, context or browser has been closed
+Call log:
+  - navigating to "https://rahulshettyacademy.com/AutomationPractice/#top", waiting until "load"
+

@@ -11,7 +11,7 @@ test.beforeEach(async ({ page }) => {
     // const context = await browser.newContext();
     login = new loginpage(page);
     login.launchtheurl();
-    
+    await page.waitForLoadState('networkidle');
    
 })
 

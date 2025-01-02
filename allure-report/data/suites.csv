@@ -1,0 +1,4 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","10405","has title","chromium","Mon Dec 30 16:35:46 IST 2024","failed","Mon Dec 30 16:35:57 IST 2024","","example.spec.js","",""
+"","1","has title","chromium","Tue Dec 31 18:18:03 IST 2024","failed","Tue Dec 31 18:18:03 IST 2024","","th.spec.js","",""
+"","5720","has title","chromium","Thu Jan 02 16:08:46 IST 2025","passed","Thu Jan 02 16:08:52 IST 2025","","test.spec.js","",""

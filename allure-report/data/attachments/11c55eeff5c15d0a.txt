@@ -1,0 +1,64 @@
+Failed to interact with checkbox with locator: //input[@id="checkBoxOption1"] locator.click: Test ended.
+Call log:
+  - waiting for locator('//input[@id="checkBoxOption1"]')
+    - locator resolved to <input value="option1" type="checkbox" id="checkBoxOption1" name="checkBoxOption1"/>
+  - attempting click action
+    - waiting for element to be visible, enabled and stable
+    - element is visible, enabled and stable
+    - scrolling into view if needed
+    - done scrolling
+    - performing click action
+    - <input id="alertbtn" value="Alert" type="submit" class="btn-style" onclick="displayAlert()"/> from <div class="block large-row-spacer">…</div> subtree intercepts pointer events
+  - retrying click action
+    - waiting for element to be visible, enabled and stable
+
+    at HelperBase.ClickOnCheckbox (E:\PlayWright_Framework\CommonUtils\HelperBase.js:66:24) {
+  [Symbol(step)]: {
+    stepId: 'pw:api@22',
+    location: {
+      file: 'E:\\PlayWright_Framework\\CommonUtils\\HelperBase.js',
+      line: 66,
+      column: 24,
+      function: 'HelperBase.ClickOnCheckbox'
+    },
+    category: 'pw:api',
+    title: 'locator.click(//input[@id="checkBoxOption1"])',
+    apiName: 'locator.click',
+    params: { selector: '//input[@id="checkBoxOption1"]', strict: true },
+    boxedStack: undefined,
+    steps: [],
+    complete: [Function: complete],
+    endWallTime: 1735621733077,
+    error: {
+      message: 'Error: locator.click: Test ended.\n' +
+        'Call log:\n' +
+        `\x1B[2m  - waiting for locator('//input[@id="checkBoxOption1"]')\x1B[22m\n` +
+        '\x1B[2m    - locator resolved to <input value="option1" type="checkbox" id="checkBoxOption1" name="checkBoxOption1"/>\x1B[22m\n' +
+        '\x1B[2m  - attempting click action\x1B[22m\n' +
+        '\x1B[2m    - waiting for element to be visible, enabled and stable\x1B[22m\n' +
+        '\x1B[2m    - element is visible, enabled and stable\x1B[22m\n' +
+        '\x1B[2m    - scrolling into view if needed\x1B[22m\n' +
+        '\x1B[2m    - done scrolling\x1B[22m\n' +
+        '\x1B[2m    - performing click action\x1B[22m\n' +
+        '\x1B[2m    - <input id="alertbtn" value="Alert" type="submit" class="btn-style" onclick="displayAlert()"/> from <div class="block large-row-spacer">…</div> subtree intercepts pointer events\x1B[22m\n' +
+        '\x1B[2m  - retrying click action\x1B[22m\n' +
+        '\x1B[2m    - waiting for element to be visible, enabled and stable\x1B[22m\n',
+      stack: 'Error: locator.click: Test ended.\n' +
+        'Call log:\n' +
+        `\x1B[2m  - waiting for locator('//input[@id="checkBoxOption1"]')\x1B[22m\n` +
+        '\x1B[2m    - locator resolved to <input value="option1" type="checkbox" id="checkBoxOption1" name="checkBoxOption1"/>\x1B[22m\n' +
+        '\x1B[2m  - attempting click action\x1B[22m\n' +
+        '\x1B[2m    - waiting for element to be visible, enabled and stable\x1B[22m\n' +
+        '\x1B[2m    - element is visible, enabled and stable\x1B[22m\n' +
+        '\x1B[2m    - scrolling into view if needed\x1B[22m\n' +
+        '\x1B[2m    - done scrolling\x1B[22m\n' +
+        '\x1B[2m    - performing click action\x1B[22m\n' +
+        '\x1B[2m    - <input id="alertbtn" value="Alert" type="submit" class="btn-style" onclick="displayAlert()"/> from <div class="block large-row-spacer">…</div> subtree intercepts pointer events\x1B[22m\n' +
+        '\x1B[2m  - retrying click action\x1B[22m\n' +
+        '\x1B[2m    - waiting for element to be visible, enabled and stable\x1B[22m\n' +
+        '\n' +
+        '    at HelperBase.ClickOnCheckbox (E:\\PlayWright_Framework\\CommonUtils\\HelperBase.js:66:24)',
+      cause: undefined
+    }
+  }
+}

@@ -1,8 +1,10 @@
 const { test, expect } = require('@playwright/test');
+const { timeout } = require('../playwright.config');
 
 
 class HelperBase
 { 
+  
 
   async ClickOnElement(page, ElementLocator) {
     try {
@@ -13,6 +15,16 @@ class HelperBase
     } catch (error) {
       console.error(`Failed to click on element with locator: ${ElementLocator}`, error);
       throw error;  // Re-throw the error if you want the test to fail
+    }
+  }
+  async EnterTextIntoField(page, ElementLocator, optionValue){
+    try{
+    await page.locator(ElementLocator).waitFor({ state: 'visible' });
+    await page.locator(ElementLocator).clear();
+    await page.locator(ElementLocator).fill(optionValue);
+    }catch(error){
+    console.error(`Failed to click on element with locator: ${ElementLocator}`, error);
+    throw error;
     }
   }
 
@@ -27,7 +39,7 @@ class HelperBase
       // Check if the radio button is not already selected before clicking
       const isSelected = await radioButton.isChecked();
       if (!isSelected) {
-        await radioButton.click();
+        radioButton.click();
         console.log(`Radio button with locator: ${ElementLocator} has been selected.`);
       } else {
         console.log(`Radio button with locator: ${ElementLocator} is already selected.`);
@@ -87,7 +99,7 @@ async  selectFromAutocomplete(page, inputLocator, searchText, optionTextLocator)
       await page.locator(inputLocator).fill(searchText);
   
       // Wait for the suggestion dropdown to appear
-      await page.waitForSelector(optionTextLocator, { state: 'visible' });
+      //await page.waitForSelector(optionTextLocator, { state: 'visible', timeout:5000 });
   
       // Get all suggestion elements
       const suggestions = await page.$$(optionTextLocator);
@@ -181,33 +193,65 @@ async  mouseOverElement(page, locator) {
       throw new Error(`Element with locator ${locator} not visible.`);
     }
   }
+  async  insidemouseOverElement(page, locator) {
+    const element = page.locator(locator);
+  
+    // Ensure the element is visible before hovering over it
+    if (await element) {
+      await element.hover();  // Hover over the element
+      console.log(`Hovered over element: ${locator}`);
+    } else {
+      throw new Error(`Element with locator ${locator} not visible.`);
+    }
+  }
   
   
 
 
   // reusableHelpers.js
-async  selectDateFromCalendarWithNavigation(page, calendarBtnLocator, monthYearLocator, dateLocator, targetMonth, targetYear) {
-    const calendarBtn = page.locator(calendarBtnLocator);
-    const monthYear = page.locator(monthYearLocator);
-    const date = page.locator(dateLocator);
-  
-    // Open the calendar
-    await calendarBtn.click();
+  async selectDateFromCalendarWithNavigation(page, monthLocator, yearLocator, dateLocator, targetMonth, targetYear, targetDay) {
+    // Wait for the calendar button to be visible
+    //await page.waitForSelector(calendarBtnLocator, { state: 'visible' });
+
+    // Locate the calendar button and open it
+    // const calendarBtn = page.locator(calendarBtnLocator);
+    // await calendarBtn.click();
     
-    // Wait for the calendar to open
-    await page.waitForSelector(monthYearLocator);
-    
-    // Navigate to the target month/year
-    let currentMonthYear = await monthYear.innerText();
-    while (!currentMonthYear.includes(targetMonth) || !currentMonthYear.includes(targetYear)) {
-      await page.locator('button.next-month').click(); // Click next month button
-      currentMonthYear = await monthYear.innerText();
+    // Wait for the month and year elements to be visible
+    await page.waitForSelector(monthLocator, { state: 'visible' });
+    await page.waitForSelector(yearLocator, { state: 'visible' });
+
+    // Navigate to the target year
+    const yearElement = page.locator(yearLocator);
+    let currentYear = await yearElement.innerText();
+    while (currentYear !== targetYear) {
+        await page.locator('button.next-year').click(); // Click to go to the next year
+        currentYear = await yearElement.innerText();
     }
-  
+
+    // Navigate to the target month
+    const monthElement = page.locator(monthLocator);
+    let currentMonth = await monthElement.innerText();
+    while (currentMonth !== targetMonth) {
+        await page.locator('button.next-month').click(); // Click next month button
+        currentMonth = await monthElement.innerText();
+    }
+
+    // Now that the correct month and year are displayed, we need to select the specific day
+    const targetDateLocator = dateLocator.replace('DATE_PLACEHOLDER', targetDay); // Assuming dateLocator can accept dynamic day
+    
+    // Locate the target date element and wait for it to be visible
+    const targetDate = page.locator(targetDateLocator);
+    await targetDate.waitFor({ state: 'visible' });
+
     // Select the target date
-    await date.click();
-    console.log(`Selected date from calendar: ${await date.textContent()}`);
-  }
+    await targetDate.click();
+    console.log(`Selected date from calendar: ${targetMonth} ${targetDay}, ${targetYear}`);
+}
+
+
+
+
   
  
   
@@ -266,8 +310,183 @@ async  takeScreenshot(page, screenshotType, text = null, locator = null, screens
     }
   }
 
+  async openLinkAndVerifyTitle(page, linkLocator, expectedTitle) {
+    try {
+      const context = page.context();
+      
+      // Wait for the new page to open
+      const pagePromise = context.waitForEvent('page');
+
+      // Click the link to open the new page
+      await page.locator(linkLocator).click();
+
+      // Wait for the new page to load
+      const newPage = await pagePromise;
+
+      // Verify that the new page has the expected title
+      await expect(newPage).toHaveTitle(expectedTitle);
+
+      // Close the new page
+      await newPage.close();
+      
+      console.log(`Successfully opened the link and verified the title: ${expectedTitle}`);
+    } catch (error) {
+      console.error(`Error while opening the link and verifying the title: ${error.message}`);
+      throw error;  // Re-throw the error to ensure the test fails
+    }
+  }
+  async interactWithIframeAndMainPage(page, iframeSelector, iframeAction, mainPageActionSelector) {
+    try {
+      // Step 1: Get iframe element
+      const iframeElement = await page.$(iframeSelector);
+  
+      if (!iframeElement) {
+        throw new Error(`Iframe not found using the selector: ${iframeSelector}`);
+      }
+  
+      // Step 2: Get the iframe's content
+      const iframe = await iframeElement.contentFrame();
+  
+      // Step 3: Perform action inside the iframe (e.g., clicking a button or filling a form)
+      await iframeAction(iframe);
+  
+      // Step 4: After interacting with iframe, perform action on the main page
+      await page.click(mainPageActionSelector);
+  
+    } catch (error) {
+      console.error('Error while interacting with iframe and main page:', error);
+      throw error; // Re-throw the error if you want the test to fail
+    }
+  }
+  async iframeAction(iframe) {
+    try {
+        // Example 1: Click a button inside the iframe
+        await iframe.click('button#submit'); // Adjust the selector as needed
+
+        // Example 2: Type some text in an input field inside the iframe
+        await iframe.type('input[name="username"]', 'testuser'); // Adjust the selector as needed
+
+        // Example 3: Select an option from a dropdown inside the iframe
+        await iframe.select('select#dropdown', 'option_value'); // Adjust the selector and value as needed
+
+    } catch (error) {
+        console.error('Error performing action inside the iframe:', error);
+        throw error; // Re-throw the error to stop the test if something goes wrong
+    }
+}
+// Helper function to type text into an input field with optional delay
+async  typeText(page, selector, text, delay = 100) {
+  try {
+    const element = await page.$(selector);
+    if (element) {
+      await element.click();  // Focus the input field
+      await page.keyboard.type(text, { delay });
+    } else {
+      throw new Error(`Element with selector "${selector}" not found.`);
+    }
+  } catch (error) {
+    console.error(`Error in typeText: ${error.message}`);
+    throw error;  // Rethrow the error to propagate it
+  }
+}
+
+// Helper function to press a single key
+async  pressKey(page, key) {
+  try {
+    await page.keyboard.press(key);
+  } catch (error) {
+    console.error(`Error in pressKey: ${error.message}`);
+    throw error;  // Rethrow the error to propagate it
+  }
+}
+
+// Helper function to press multiple keys in sequence
+async  pressKeys(page, keys) {
+  try {
+    for (const key of keys) {
+      await page.keyboard.press(key);
+    }
+  } catch (error) {
+    console.error(`Error in pressKeys: ${error.message}`);
+    throw error;  // Rethrow the error to propagate it
+  }
+}
+
+// Helper function to clear an input field
+async  clearInput(page, selector) {
+  try {
+    const element = await page.$(selector);
+    if (element) {
+      await element.click();  // Focus the input field
+      await page.keyboard.press('Control+A');  // Select all text
+      await page.keyboard.press('Backspace');  // Delete selected text
+    } else {
+      throw new Error(`Element with selector "${selector}" not found.`);
+    }
+  } catch (error) {
+    console.error(`Error in clearInput: ${error.message}`);
+    throw error;  // Rethrow the error to propagate it
+  }
+}
+
+// Helper function to type with modifiers (e.g., Shift, Control)
+async  typeWithModifiers(page, selector, text, modifiers = []) {
+  try {
+    const element = await page.$(selector);
+    if (element) {
+      await element.click();  // Focus the input field
+      for (const modifier of modifiers) {
+        await page.keyboard.down(modifier);  // Hold the modifier key
+      }
+      await page.keyboard.type(text);  // Type the text
+      for (const modifier of modifiers) {
+        await page.keyboard.up(modifier);  // Release the modifier key
+      }
+    } else {
+      throw new Error(`Element with selector "${selector}" not found.`);
+    }
+  } catch (error) {
+    console.error(`Error in typeWithModifiers: ${error.message}`);
+    throw error;  // Rethrow the error to propagate it
+  }
+}
+
+// Helper function to simulate paste (Ctrl+V)
+async  pasteText(page, selector, text) {
+  try {
+    const element = await page.$(selector);
+    if (element) {
+      await element.click();  // Focus the input field
+      await page.keyboard.type(text);  // Type the text
+      await page.keyboard.press('Control+V');  // Simulate Ctrl+V (paste)
+    } else {
+      throw new Error(`Element with selector "${selector}" not found.`);
+    }
+  } catch (error) {
+    console.error(`Error in pasteText: ${error.message}`);
+    throw error;  // Rethrow the error to propagate it
+  }
+}
+
+// Helper function to hold a key and press another
+async holdAndPressKey(page, holdKey, pressKey) {
+  try {
+    await page.keyboard.down(holdKey);  // Hold the modifier key
+    await page.keyboard.press(pressKey);  // Press the key
+    await page.keyboard.up(holdKey);  // Release the modifier key
+  } catch (error) {
+    console.error(`Error in holdAndPressKey: ${error.message}`);
+    throw error;  // Rethrow the error to propagate it
+  }
+}
+
+
+
+ 
+
 
 }
+
 module.exports = { HelperBase };
 
   

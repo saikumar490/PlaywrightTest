@@ -1,5 +1,5 @@
 const { test, chromium, firefox, webkit } = require('@playwright/test');
-const { browser,urls } = require('../Support/Constants.js');
+const { urls,browser } = require('../Support/Constants.js');
 
 // Common Setup and Teardown Hooks
 
@@ -27,6 +27,7 @@ test.beforeAll(async ({}) => {
 
     // Navigate to Admin URL
     await page.goto(urls.AdminUrl, { waitUntil: 'load' });
+    await page.waitForLoadState('networkidle');
 
     // Store the browser instance and page for use in your tests
     global.page = page;

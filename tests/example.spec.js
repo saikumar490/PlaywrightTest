@@ -4,7 +4,9 @@ const {urls, locators } = require('../Support/Constants.js');
 
 
 test.only('has title', async ({ page }) => {
+
   await page.goto(urls.AdminUrl);
+ 
 
   // Expect a title "to contain" a substring.
   await expect(page).toHaveTitle(/Playwright/);

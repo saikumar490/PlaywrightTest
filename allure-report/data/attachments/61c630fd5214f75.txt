@@ -1,0 +1,1 @@
+Radio button with locator: (//input[@class="radioButton"])[1] has been selected.

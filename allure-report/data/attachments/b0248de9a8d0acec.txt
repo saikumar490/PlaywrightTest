@@ -1,0 +1,1 @@
+Checkbox with locator: //input[@id="checkBoxOption1"] has been checked.

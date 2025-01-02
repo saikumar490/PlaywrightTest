@@ -1,0 +1,3 @@
+Option with label "Option2" has been selected in the dropdown.
+Radio button with locator: (//input[@class="radioButton"])[1] has been selected.
+Checkbox with locator: //input[@id="checkBoxOption1"] has been checked.

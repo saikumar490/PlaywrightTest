@@ -1,17 +1,18 @@
-export const urls = 
+//place all 
+const urls = 
 {
-    AdminUrl: '',
-    CilentUrl:'',
-};
-export const locators = 
-{
-   
+    AdminUrl: 'https://rahulshettyacademy.com/AutomationPractice/#top',
+    CilentUrl:'https://jqueryui.com/datepicker/',
 };
 
-export const browser = {
+//place all locators
+const locators = 
+{
+   ele : '//*[contains(text(),"Draggable")]',
+};
 
-    Browser: 'chrome'
+const browser = 'chrome'; 
 
-}
+
 
 module.exports = { urls, locators, browser};

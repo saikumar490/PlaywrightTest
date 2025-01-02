@@ -1,0 +1,37 @@
+Failed to select option for search text "American Samoa" page.waitForSelector: Test ended.
+Call log:
+  - waiting for locator('//div[@class="ui-menu-item-wrapper"]') to be visible
+
+    at HelperBase.selectFromAutocomplete (E:\PlayWright_Framework\CommonUtils\HelperBase.js:101:18) {
+  [Symbol(step)]: {
+    stepId: 'pw:api@16',
+    location: {
+      file: 'E:\\PlayWright_Framework\\CommonUtils\\HelperBase.js',
+      line: 101,
+      column: 18,
+      function: 'HelperBase.selectFromAutocomplete'
+    },
+    category: 'pw:api',
+    title: 'page.waitForSelector(//div[@class="ui-menu-item-wrapper"])',
+    apiName: 'page.waitForSelector',
+    params: {
+      selector: '//div[@class="ui-menu-item-wrapper"]',
+      state: 'visible'
+    },
+    boxedStack: undefined,
+    steps: [],
+    complete: [Function: complete],
+    endWallTime: 1735620706247,
+    error: {
+      message: 'Error: page.waitForSelector: Test ended.\n' +
+        'Call log:\n' +
+        `\x1B[2m  - waiting for locator('//div[@class="ui-menu-item-wrapper"]') to be visible\x1B[22m\n`,
+      stack: 'Error: page.waitForSelector: Test ended.\n' +
+        'Call log:\n' +
+        `\x1B[2m  - waiting for locator('//div[@class="ui-menu-item-wrapper"]') to be visible\x1B[22m\n` +
+        '\n' +
+        '    at HelperBase.selectFromAutocomplete (E:\\PlayWright_Framework\\CommonUtils\\HelperBase.js:101:18)',
+      cause: undefined
+    }
+  }
+}
