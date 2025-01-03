@@ -2,6 +2,8 @@ const { test, expect } = require('@playwright/test');
 const {urls, locators } = require('../Support/Constants.js'); 
 const { HelperBase } = require('../CommonUtils/HelperBase.js');
 const { chromium } = require('playwright');
+const testdata = require('../TestData/testdata.json');
+//const testData = JSON.parse(fs.readFileSync(testDataPath, 'utf-8'));
 
 
 class loginpage{
@@ -13,7 +15,8 @@ class loginpage{
         this.passwordinput='//input[@id="loginpassword"]'
         this.loginbutton='(//*[contains(text(),"Log in")])[2]'
         this.logoutbutton='#logout2'
-        this.helper = new HelperBase();  // Initialize HelperBase class
+        this.helper = new HelperBase();
+     // Initialize HelperBase class
       }
 
     async launchtheurl(){
@@ -27,6 +30,7 @@ class loginpage{
     async loginintoapplications(){
 
         await this.helper.ClickOnElement(this.page, this.login);
+        await this.helper.EnterTextIntoField(this.page, this.usernameinput, testdata[0].usernames)
 
     }
 

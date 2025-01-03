@@ -9,6 +9,7 @@ const urls =
 const locators = 
 {
    ele : '//*[contains(text(),"Draggable")]',
+   
 };
 
 const browser = 'chrome'; 
